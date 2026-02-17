@@ -1,0 +1,4 @@
+<Solution>
+	<Project Path="Parakeet.Core/Parakeet.Core.csproj" />
+	<Project Path="Parakeet.Shared/Parakeet.Shared.csproj" />
+</Solution>
