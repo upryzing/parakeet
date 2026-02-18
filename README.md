@@ -1,0 +1,22 @@
+# Parakeet: Upryzing's C# Server
+
+## Compilation
+You can compile Parakeet by running `dotnet build` and `dotnet publish` in the root of the repository. These commands will also work in each subproject.
+
+## TODO
+
+- [ ] Core (Parakeet.Core)
+  - [ ] Accounts
+    - [ ] Feature parity with Parrot
+  - [ ] Channels
+    - [ ] Text
+    - [ ] Voice
+  - [ ] Config
+    - [ ] Invite only
+      - [ ] Single use
+      - [ ] Multiple use
+      - [ ] Infinite Use
+- [ ] Bonfire2 (Parakeet.Events)
+- [ ] Dove (Parakeet.Proxy)
+- [ ] Pigeon (Parakeet.Fileserver)
+- [ ] Admin panel
