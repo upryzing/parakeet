@@ -1,16 +1,37 @@
-using System.ComponentModel.DataAnnotations;
+/**
+<copyright>
+Parakeet (Upryzing C# Instance Server)
+Copyright (C) 2026 Upryzing
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+</copyright>
+*/
+
+using System.ComponentModel.DataAnnotations;
 
 using IniParser;
 using IniParser.Model;
 
 namespace Parakeet.Shared.Classes.Configuration;
 
+// TODO: actually add more to the config
 public sealed class InstanceConfig {
 	public InstanceConfig(String path) {
 		var parser = new FileIniDataParser();
 		IniData data = parser.ReadFile(path);
 
+		// LEAST USEFUL CHECK EVER, no check
 		if (!data.Sections.ContainsSection("Instance"))
 			throw new FileLoadException("Instance config file is malformed");
 

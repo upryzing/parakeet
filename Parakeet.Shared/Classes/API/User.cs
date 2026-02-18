@@ -1,3 +1,23 @@
+/**
+<copyright>
+Parakeet (Upryzing C# Instance Server)
+Copyright (C) 2026 Upryzing
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+</copyright>
+*/
+
 namespace Parakeet.Shared.Classes.API;
 
 public enum RelationshipStatus : Byte {
@@ -30,24 +50,25 @@ public enum UserBadges : UInt16 {
 	ReservedRelevantJokeBadge2 = 1024,
 }
 
-public class User(Ulid id, string user, string discrim, string instance, string? name, string[] woke, bool on, bool priv, Ulid? owner, File avi, RelationshipStatus rel, UserBadges badges, UserFlags flags, UserStatus status) {
-	public readonly Ulid UserID = id;
+// Do we actually need all of this for the backend?
+public class User(Ulid userID, string username, string userDiscriminator, string userInstance, string? displayName, string[] pronounList, bool isOnline, bool hasPrivileges, Ulid? botOwner, File avatar, RelationshipStatus relationships, UserBadges badges, UserFlags userFlags, UserStatus status) {
+	public readonly Ulid UserID = userID;
 
 	/**
 	<summary>
 	Validate FIDs with regexp: <c>\b([a-z0-9._%+-]{1,160})@([a-z0-9-]+(\.[a-z0-9-]+)*)$</c>.<br/>
-	Yes thats from the polyproto docs, no I don't care
+	Yes, that is from the polyproto docs and no I don't care.
 	</summary>
 	*/
-	public readonly string Homeserver = instance;
+	public readonly string Homeserver = userInstance;
 
-	public string Username = user, Discriminator = discrim;
+	public string Username = username, Discriminator = userDiscriminator;
 
-	public string? DisplayName = name;
-	public string[]? Pronouns = woke;
+	public string? DisplayName = displayName;
+	public string[]? Pronouns = pronounList;
 
-	public bool Online = on;
-	public bool Privileged = priv;
+	public bool Online = isOnline;
+	public bool Privileged = hasPrivileges;
 	
 	/**
 	<summary>
@@ -55,12 +76,12 @@ public class User(Ulid id, string user, string discrim, string instance, string?
 	If it's null, this is a human owned account, refer to UserID. Otherwise, it's a bot.
 	</summary>
 	*/
-	public Ulid? BotOwner = owner;
+	public Ulid? BotOwner = botOwner;
 
-	public File Avatar = avi;
-	public RelationshipStatus Relationship = rel;
+	public File Avatar = avatar;
+	public RelationshipStatus Relationship = relationships;
 
 	public UserBadges Badges = badges;
-	public UserFlags Flags = flags;
+	public UserFlags Flags = userFlags;
 	public UserStatus Status = status;
 }

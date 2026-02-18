@@ -1,8 +1,37 @@
+/**
+<copyright>
+Parakeet (Upryzing C# Instance Server)
+Copyright (C) 2026 Upryzing
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+</copyright>
+*/
+
 namespace Parakeet.Shared.Classes.API;
 
 public class UserProfile(String? content, File? bannerFile, String? tz) {
 	public readonly String? Contents = content;
 	public readonly File? Banner = bannerFile;
 
+	/**
+	<summary>
+	A user's timezone, intended to be one of the many different timezone codes (e.g. UTC).
+	</summary>
+	<remarks>
+	How will we handle DST? Everywhere handles it differently.<br/>
+	Will we force clients to store a list of DST for each TZ?
+	</remarks>
+	*/
 	public readonly String? Timezone = tz;
 }
