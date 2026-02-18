@@ -1,6 +1,17 @@
-using Parakeet.Core.Controllers;
+using Microsoft.EntityFrameworkCore;
+
+using Parakeet.Core.Database;
+
+using Parakeet.Shared.Classes.Configuration;
+
+InstanceConfig.MakeStaticConfig("instance.conf");
+
+var conf = InstanceConfig.StaticConf ?? throw new NullReferenceException("Couldn't make config file, whoopsies!");
 
 var builder = WebApplication.CreateBuilder(args);
+
+var dataSource = DatabaseContext.GetDataSource(conf.Database);
+builder.Services.AddDbContext<DatabaseContext>(options => { DatabaseContext.Configure(options, dataSource, conf.Database); });
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
