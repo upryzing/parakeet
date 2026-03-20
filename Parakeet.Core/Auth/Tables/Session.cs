@@ -17,32 +17,34 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using EntityFrameworkCore.Projectables;
 
-namespace Parakeet.Shared.Classes.API;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-[ComplexType]
-public class FileData(string fileID, string fileTag, string filename, FileMetadata meta, string type, UInt64 size) {
-	public readonly string ID = fileID;
-	public readonly string Tag = fileTag;
+namespace Parakeet.Core.Auth.Tables;
 
-	public readonly string Filename = filename;
+// UNFINISHED
+[Table("sessions")]
+[Index(nameof(ID), IsUnique = true)]
+[Index(nameof(UserID))]
+[Index(nameof(Token))]
+[Index(nameof(UserID))]
+public class Session {
+	[Column("id")]
+	public Guid ID { get; set; }
 
-	public readonly FileMetadata Metadata = meta;
+	[Column("userID")]
+	public Guid UserID { get; set; }
 
-	/**
-	<summary>
-	MIMETYPE IF YOU'RE A NERD (like meeeee *paws at you*)
-	</summary>
-	*/
-	public readonly string MediaType = type;
+	[Column("token")]
+	[StringLength(64)]
+	public string Token { get; set; }
 
-	/**
-	<summary>
-	The file's size in bytes.
-
-	Advice: use *ibibytes, not *byte, when displaying.
-	</summary>
-	*/
-	public readonly UInt64 Size = size;
-}
+	[Column("name")]
+	[StringLength(64)]
+	public string SessionName { get; set; }
+};

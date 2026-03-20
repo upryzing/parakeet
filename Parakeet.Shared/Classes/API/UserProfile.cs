@@ -20,9 +20,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 namespace Parakeet.Shared.Classes.API;
 
-public class UserProfile(String? content, File? bannerFile, String? tz) {
+public class UserProfile(String? content, FileData? bannerFile, String? tz) {
 	public readonly String? Contents = content;
-	public readonly File? Banner = bannerFile;
+	public readonly FileData? Banner = bannerFile;
 
 	/**
 	<summary>

@@ -1,3 +1,8 @@
+
+
+using System.ComponentModel.DataAnnotations.Schema;
+
+
 /**
 <copyright>
 Parakeet (Upryzing C# Instance Server)
@@ -17,33 +22,34 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
-
 namespace Parakeet.Shared.Classes.API;
 
-public enum FileMetatype : UInt16 {
+public enum FileMetatype : Byte {
 	File,
 	Text,
 	Image,
-	Audio
+	Audio,
+	Video
 }
 /**
 <summary>
 Data associated to the file.
 </summary>
 */
+[ComplexType]
 public class FileMetadata(FileMetatype kind, uint width = 0, uint height = 0) {
 	public FileMetatype Type = kind;
 
 	/**
 	<summary>
-	Width of a given image. Unused if Type != FileMetatype.Image
+	Width of a given image. Unused if Type != FileMetatype.Image OR FileMetatype.Video
 	</summary>
 	*/
 	public uint Width = width;
 
 	/**
 	<summary>
-	Height of a given image. Unused if Type != FileMetatype.Image
+	Height of a given image. Unused if Type != FileMetatype.Image OR FileMetatype.Video
 	</summary>
 	*/
 	public uint Height = height;

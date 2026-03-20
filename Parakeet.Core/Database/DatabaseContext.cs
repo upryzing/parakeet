@@ -31,9 +31,18 @@ using Npgsql;
 using Parakeet.Shared.Classes;
 using Parakeet.Shared.Classes.Configuration;
 
+using Parakeet.Core.Accounts.Tables;
+using Parakeet.Core.Auth.Tables;
+using Parakeet.Core.Spaces.Tables;
+using Parakeet.Core.Users.Tables;
+
 namespace Parakeet.Core.Database;
 
 public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options) {
+	public virtual DbSet<Account> Accounts { get; init; } = null!;
+	public virtual DbSet<Invite> Invites { get; init; } = null!;
+	public virtual DbSet<Session> Sessions { get; init; } = null!;
+	public virtual DbSet<Space> Spaces { get; init; } = null!;
 	public virtual DbSet<User> Users { get; init; } = null!;
 
 	/**

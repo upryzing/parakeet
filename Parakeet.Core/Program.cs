@@ -19,44 +19,73 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 using Parakeet.Core.Database;
 
 using Parakeet.Shared.Classes.Configuration;
 
-InstanceConfig.MakeStaticConfig("instance.conf");
+namespace Parakeet.Core;
 
-var conf = InstanceConfig.StaticConf ?? throw new NullReferenceException("Couldn't make config file, whoopsies!");
+class Program {
+	static void Main(string[] args) {
+		InstanceConfig.MakeStaticConfig("instance.conf");
 
-var builder = WebApplication.CreateBuilder(args);
+		var conf = InstanceConfig.StaticConf ?? throw new NullReferenceException("Couldn't make config file, whoopsies!");
 
-var dataSource = DatabaseContext.GetDataSource(conf.Database);
-builder.Services.AddDbContext<DatabaseContext>(options => { DatabaseContext.Configure(options, dataSource, conf.Database); });
+		var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+		var dataSource = DatabaseContext.GetDataSource(conf.Database);
+		builder.Services.AddDbContext<DatabaseContext>(options => DatabaseContext.Configure(options, dataSource, conf.Database));
 
-var app = builder.Build();
+		// Add services to the container.
+		// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+		builder.Services.AddOpenApi();
+		builder.Services.AddControllers();
 
-if (app is null) {
-	Console.WriteLine("Failed to build WebApplication app");
-	Environment.Exit(127);
+		var app = builder.Build();
+
+		// If the DB doesn't have tables, we migrate immediately.
+		// NOTE: WE DON'T USE ENSURECREATED, IT DOESN'T LET US USE MIGRATIONS
+		using (var scope = app.Services.CreateScope()) {
+			var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+			
+			if (!db.GetService<IRelationalDatabaseCreator>().HasTables()) {
+				db.Database.Migrate();
+
+				Console.WriteLine("Attempted to create DB tables");
+			}
+		}
+
+		if (args.Contains<string>("--migrate")) {
+			Console.WriteLine("MROOOOW");
+
+			using var scope = app.Services.CreateScope();
+			var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+			db.Database.Migrate();
+			db.SaveChanges();
+		}
+
+		if (app is null) {
+			Console.WriteLine("Failed to build WebApplication app");
+			Environment.Exit(127);
+		}
+
+		if (!app.Environment.IsDevelopment())
+			app.UseHttpsRedirection();
+		else
+			app.UseDeveloperExceptionPage();
+
+		app.UseRouting();
+		app.UseCors();
+		app.UseAuthentication();
+
+		app.MapOpenApi();
+
+		app.MapControllers();
+
+		app.Run();
+	}
 }
-
-if (!app.Environment.IsDevelopment())
-	app.UseHttpsRedirection();
-else
-	app.UseDeveloperExceptionPage();
-
-app.UseRouting();
-app.UseCors();
-app.UseAuthentication();
-
-app.MapOpenApi();
-
-app.MapControllers();
-
-await app.StartAsync();
-await app.WaitForShutdownAsync();

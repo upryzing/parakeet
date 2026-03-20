@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 using Parakeet.Core.Database;
+using Parakeet.Core.Users.Tables;
 
 namespace Parakeet.Core.Controllers;
 
@@ -48,7 +49,7 @@ public class TestController(DatabaseContext dbContext) : ControllerBase {
 	[HttpGet]
 	[Route("/test/usr")]
 	public async Task<JsonResult> GetTest() {
-		User usr = new() { ID = "test", Homeserver = "localhost", Username = "Test", UsernameLower = "test" };
+		User usr = new() { ID = (new Ulid()).ToGuid(), Homeserver = "localhost", Username = "Test" };
 		_db.Users.Add(usr);
 
 		await _db.SaveChangesAsync();
@@ -58,6 +59,12 @@ public class TestController(DatabaseContext dbContext) : ControllerBase {
 		};
 
 		return new JsonResult(json);
+	}
+
+	[HttpGet]
+	[Route("/test/codes/{id}")]
+	public async Task<ContentResult> GetCodeTest(int id) {
+		return new ContentResult { StatusCode = id, Content = "{}" };
 	}
 
 	private readonly DatabaseContext _db = dbContext;

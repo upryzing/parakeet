@@ -25,27 +25,28 @@ using EntityFrameworkCore.Projectables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Parakeet.Core.Database;
+using Npgsql;
+using NpgsqlTypes;
 
-// UNFINISHED
-[Table("user")]
-[Index(nameof(ID), nameof(Homeserver), IsUnique = true)]
-[Index(nameof(UsernameLower), nameof(Homeserver), IsUnique = true)]
-[Index(nameof(Homeserver))]
-public class User {
+namespace Parakeet.Core.Accounts.Tables;
+
+// Local registered users
+[Table("accounts")]
+[Index(nameof(ID), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
+[Index(nameof(Password))]
+[Index(nameof(Deletion))]
+public class Account {
 	[Column("id")]
-	[StringLength(26)]
-	public string ID { get; set; }
+	public Guid ID { get; set; }
 
-	[Column("homeserver")]
-	[StringLength(512)]
-	public string Homeserver { get; set; }
+	[Column("email")]
+	public string Email { get; set; }
 
-	[Column("username")]
-	[StringLength(160)]
-	public string Username { get; set; }
+	[Column("password")]
+	[StringLength(105)]
+	public string Password { get; set; }
 
-	[Column("usernameLower")]
-	[StringLength(160)]
-	public string UsernameLower { get; set; }
+	[Column("deletion")]
+	public bool Deletion { get; set; }
 };

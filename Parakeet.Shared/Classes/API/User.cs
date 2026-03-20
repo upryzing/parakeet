@@ -51,7 +51,7 @@ public enum UserBadges : UInt16 {
 }
 
 // Do we actually need all of this for the backend?
-public class User(Ulid userID, string username, string userDiscriminator, string userInstance, string? displayName, string[] pronounList, bool isOnline, bool hasPrivileges, Ulid? botOwner, File avatar, RelationshipStatus relationships, UserBadges badges, UserFlags userFlags, UserStatus status) {
+public class User(Ulid userID, string username, string userDiscriminator, string userInstance, string? displayName, string[] pronounList, bool isOnline, bool hasPrivileges, Ulid? botOwner, FileData avatar, RelationshipStatus relationships, UserBadges badges, UserFlags userFlags, UserStatus status) {
 	public readonly Ulid UserID = userID;
 
 	/**
@@ -73,12 +73,12 @@ public class User(Ulid userID, string username, string userDiscriminator, string
 	/**
 	<summary>
 	The owner of the given account.<br/>
-	If it's null, this is a human owned account, refer to UserID. Otherwise, it's a bot.
+	If it's null, this is a human owned account and you should refer to UserID. Otherwise, it's a bot.
 	</summary>
 	*/
 	public Ulid? BotOwner = botOwner;
 
-	public File Avatar = avatar;
+	public FileData Avatar = avatar;
 	public RelationshipStatus Relationship = relationships;
 
 	public UserBadges Badges = badges;
