@@ -18,59 +18,116 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
 
+using System.Text.Json.Serialization;
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using EntityFrameworkCore.Projectables;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Parakeet.Shared.Classes.API;
+using Parakeet.Core.Attachments.Tables;
 
 namespace Parakeet.Core.Spaces.Tables;
 
-[ComplexType]
 public class Category {
+	[JsonPropertyName("id")]
 	public Guid ID;
 
+	[JsonPropertyName("title")]
 	[StringLength(32)]
 	public string Title;
 
+	[JsonPropertyName("channels")]
 	public string[] Channels;
+}
+
+public class SystemMessageChannels {
+	[JsonPropertyName("user_joined")]
+	public string? UserJoined;
+
+	[JsonPropertyName("user_left")]
+	public string? UserLeft;
+
+	[JsonPropertyName("user_kicked")]
+	public string? UserKicked;
+
+	[JsonPropertyName("user_banned")]
+	public string? UserBanned;
+}
+
+public class OverrideField {
+	[JsonPropertyName("a")]
+	public Int64 Allow;
+
+	[JsonPropertyName("d")]
+	public Int64 Disallow;
+}
+
+public class Role {
+	[JsonPropertyName("id")]
+	public string? ID;
+
+	[JsonPropertyName("name")]
+	public string? Name;
+
+	[JsonPropertyName("permissions")]
+	public required OverrideField Permissions { get; set; }
+
+	[JsonPropertyName("colour")]
+	public string? Colour;
+
+	[JsonPropertyName("hoist")]
+	public bool Hoist;
+
+	[JsonPropertyName("rank")]
+	public Int64 Rank;
 }
 
 // UNFINISHED
 [Table("spaces")]
-[Index(nameof(ID), nameof(Homeserver), IsUnique = true)]
+[Index(nameof(ID), IsUnique = true)]
 [Index(nameof(OwnerID))]
-[Index(nameof(Homeserver))]
 public class Space {
 	[Column("id")]
 	public Guid ID { get; set; }
 
-	[Column("ownerID")]
+	[Column("owner")]
 	public Guid OwnerID { get; set; }
 
-	[Column("homeserver")]
-	public string Homeserver { get; set; }
-
-	[Column("serverName")]
+	[Column("name")]
 	[StringLength(32)]
-	public string ServerName { get; set; }
+	public required string ServerName { get; set; }
 
-	[Column("serverDesc")]
+	[Column("description")]
 	[StringLength(32)]
-	public string ServerDescription { get; set; }
+	public string? ServerDescription { get; set; }
 
 	[Column("nsfw")]
 	[DefaultValue(false)]
 	public bool IsNSFW { get; set; }
 
-	[Column("defaultPermissions")]
-	public long DefaultPerssions { get; set; }
+	[Column("roles")]
+	public Dictionary<String, Role> Roles { get; set; } = [];
+
+	[Column("default_permissions")]
+	public Int64 DefaultPerssions { get; set; }
+
+	[Column("icon", TypeName = "jsonb")]
+	public Attachment? Icon { get; set; }
+
+	[Column("banner", TypeName = "jsonb")]
+	public Attachment? Banner { get; set; }
 
 	[Column("channels")]
 	public List<string> Channels { get; set; }
 
 	[Column("categories", TypeName = "jsonb")]
-	public List<Category> Categories { get; set; }
+	public List<Category>? Categories { get; set; }
+
+	[Column("system_messages", TypeName = "jsonb")]
+	public SystemMessageChannels? SystemMessages { get; set; }
 };

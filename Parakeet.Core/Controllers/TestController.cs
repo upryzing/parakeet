@@ -45,11 +45,13 @@ public class TestController(DatabaseContext dbContext) : ControllerBase {
 		return new JsonResult(test);
 	}
 
+	/* i cba to update this so this is commented out.
+	use as a reference when implementing the real routes ig?
 	// Test route: create a user
 	[HttpGet]
 	[Route("/test/usr")]
 	public async Task<JsonResult> GetTest() {
-		User usr = new() { ID = (new Ulid()).ToGuid(), Homeserver = "localhost", Username = "Test" };
+		User usr = new() { ID = (new Ulid()).ToGuid(), Username = "Test" };
 		_db.Users.Add(usr);
 
 		await _db.SaveChangesAsync();
@@ -59,7 +61,7 @@ public class TestController(DatabaseContext dbContext) : ControllerBase {
 		};
 
 		return new JsonResult(json);
-	}
+	}*/
 
 	[HttpGet]
 	[Route("/test/codes/{id}")]

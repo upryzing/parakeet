@@ -32,46 +32,33 @@ using Parakeet.Shared.Classes.API;
 
 namespace Parakeet.Core.Attachments.Tables;
 
-[ComplexType]
-public class UsedFor {
-	public string Type;
-	
-	public Guid ID;
-}
-
 // Local registered users
-[Table("files")]
+[Table("file_hashes")]
 [Index(nameof(ID), IsUnique = true)]
-public class Attachment {
+public class Hashes {
 	[Column("id")]
 	public Guid ID { get; set; }
-
-	[Column("tag")]
-	public string Tag { get; set; }
-
-	[Column("filename")]
-	public string Filename { get; set; }
 
 	/**
 	<summary>
 	A SHA512 hash, as a string ()
 	</summary>
 	*/
-	[Column("hash")]
-	public string Hash { get; set; }
+	[Column("processed_hash")]
+	public required string ProcessedHash { get; set; }
 
-	[Column("uploaded_at")]
+	[Column("created_at")]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public DateTime UploadedAt { get; set; }
 
-	[Column("uploader_id")]
-	public Guid UploaderID { get; set; }
-	
-	[Column("deleted")]
-	public bool? Deleted { get; set; }
+	[Column("bucket_id")]
+	public required string BucketID { get; set; }
 
-	[Column("reported")]
-	public bool? Reported { get; set; }
+	[Column("path")]
+	public required string Path { get; set; }
+
+	[Column("iv")]
+	public required string IV { get; set; }
 
 	[Column("metadata", TypeName = "jsonb")]
 	public required FileMetadata Metadata { get; set; }
@@ -81,16 +68,4 @@ public class Attachment {
 
 	[Column("size")]
 	public ulong Size { get; set; }
-
-	[Column("message_id")]
-	public string? MessageID { get; set; }
-
-	[Column("user_id")]
-	public string? UserID { get; set; }
-
-	[Column("server_id")]
-	public string? ServerID { get; set; }
-
-	[Column("object_id")]
-	public string? ObjectID { get; set; }
-};
+}
