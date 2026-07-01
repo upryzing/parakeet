@@ -43,7 +43,7 @@ public class SpaceMember {
 	public DateTime JoinedAt { get; set; }
 
 	[Column("roles")]
-	public List<string> Roles { get; set; }
+	public required List<string> Roles { get; set; }
 
 	[Column("timeout")]
 	public DateTime? Timeout { get; set; }

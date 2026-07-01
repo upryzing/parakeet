@@ -36,7 +36,7 @@ namespace Parakeet.Core.Attachments.Tables;
 
 public class UsedFor {
 	[JsonPropertyName("type")]
-	public string Type;
+	public required string Type;
 	
 	[JsonPropertyName("id")]
 	public Guid ID;
@@ -71,10 +71,10 @@ public class Attachment {
 	public Guid ID { get; set; }
 
 	[Column("tag")]
-	public string Tag { get; set; }
+	public required string Tag { get; set; }
 
 	[Column("filename")]
-	public string Filename { get; set; }
+	public required string Filename { get; set; }
 
 	/**
 	<summary>
@@ -82,7 +82,7 @@ public class Attachment {
 	</summary>
 	*/
 	[Column("hash")]
-	public string Hash { get; set; }
+	public required string Hash { get; set; }
 
 	[Column("uploaded_at")]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

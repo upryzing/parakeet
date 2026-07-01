@@ -39,10 +39,10 @@ public class Category {
 
 	[JsonPropertyName("title")]
 	[StringLength(32)]
-	public string Title;
+	public required string Title;
 
 	[JsonPropertyName("channels")]
-	public string[] Channels;
+	public required string[] Channels;
 }
 
 public class SystemMessageChannels {

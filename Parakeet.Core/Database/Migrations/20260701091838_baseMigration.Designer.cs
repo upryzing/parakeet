@@ -16,7 +16,7 @@ using Parakeet.Core.Users.Tables;
 namespace Parakeet.Core.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260701091333_baseMigration")]
+    [Migration("20260701091838_baseMigration")]
     partial class baseMigration
     {
         /// <inheritdoc />

@@ -42,9 +42,9 @@ public class Session {
 
 	[Column("token")]
 	[StringLength(64)]
-	public string Token { get; set; }
+	public required string Token { get; set; }
 
 	[Column("name")]
 	[StringLength(64)]
-	public string SessionName { get; set; }
+	public required string SessionName { get; set; }
 };
