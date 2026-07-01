@@ -20,6 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 using EntityFrameworkCore.Projectables;
 
 using Microsoft.EntityFrameworkCore;
@@ -32,11 +34,33 @@ using Parakeet.Shared.Classes.API;
 
 namespace Parakeet.Core.Attachments.Tables;
 
-[ComplexType]
 public class UsedFor {
+	[JsonPropertyName("type")]
 	public string Type;
 	
+	[JsonPropertyName("id")]
 	public Guid ID;
+}
+
+public class FileMetadata {
+	[JsonPropertyName("type")]
+	public FileMetatype Type;
+
+	/**
+	<summary>
+	Width of a given image. Unused if Type != FileMetatype.Image OR FileMetatype.Video
+	</summary>
+	*/
+	[JsonPropertyName("width")]
+	public uint Width;
+
+	/**
+	<summary>
+	Height of a given image. Unused if Type != FileMetatype.Image OR FileMetatype.Video
+	</summary>
+	*/
+	[JsonPropertyName("height")]
+	public uint Height;
 }
 
 // Local registered users
@@ -54,7 +78,7 @@ public class Attachment {
 
 	/**
 	<summary>
-	A SHA512 hash, as a string ()
+	A SHA512 hash, as a string
 	</summary>
 	*/
 	[Column("hash")]

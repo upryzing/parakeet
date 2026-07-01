@@ -18,54 +18,32 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 using EntityFrameworkCore.Projectables;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Npgsql;
-using NpgsqlTypes;
-
+using Parakeet.Core.Attachments.Tables;
 using Parakeet.Shared.Classes.API;
 
-namespace Parakeet.Core.Attachments.Tables;
+using FileData = Parakeet.Shared.Classes.API.FileData;
 
-// Local registered users
-[Table("file_hashes")]
+namespace Parakeet.Core.Users.Tables;
+
+// NOTE: Necessary table deviation, C# does not support the way that Parrot did their settings table
+[Table("user_settings")]
 [Index(nameof(ID), IsUnique = true)]
-public class Hashes {
+public class UserSettings {
 	[Column("id")]
+	[Required]
 	public Guid ID { get; set; }
 
-	/**
-	<summary>
-	A SHA512 hash, as a string
-	</summary>
-	*/
-	[Column("processed_hash")]
-	public required string ProcessedHash { get; set; }
-
-	[Column("created_at")]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public DateTime UploadedAt { get; set; }
-
-	[Column("bucket_id")]
-	public required string BucketID { get; set; }
-
-	[Column("path")]
-	public required string Path { get; set; }
-
-	[Column("iv")]
-	public required string IV { get; set; }
-
-	[Column("metadata", TypeName = "jsonb")]
-	public required FileMetadata Metadata { get; set; }
-
-	[Column("content_type")]
-	public required string ContentType { get; set; }
-
-	[Column("size")]
-	public ulong Size { get; set; }
-}
+	[Column("settings")]
+	[Required]
+	public required Dictionary<string, Tuple<Int64, string>> Settings { get; set; }
+};

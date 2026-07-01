@@ -110,8 +110,8 @@ public class Space {
 	[DefaultValue(false)]
 	public bool IsNSFW { get; set; }
 
-	[Column("roles")]
-	public Dictionary<String, Role> Roles { get; set; } = [];
+	[Column("roles", TypeName = "jsonb")]
+	public Dictionary<string, Role> Roles { get; set; } = [];
 
 	[Column("default_permissions")]
 	public Int64 DefaultPerssions { get; set; }
@@ -123,7 +123,7 @@ public class Space {
 	public Attachment? Banner { get; set; }
 
 	[Column("channels")]
-	public List<string> Channels { get; set; }
+	public required List<string> Channels { get; set; }
 
 	[Column("categories", TypeName = "jsonb")]
 	public List<Category>? Categories { get; set; }

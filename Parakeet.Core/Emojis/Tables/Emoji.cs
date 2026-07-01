@@ -18,54 +18,54 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
 
+using System.Text.Json.Serialization;
+
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using EntityFrameworkCore.Projectables;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Npgsql;
-using NpgsqlTypes;
-
 using Parakeet.Shared.Classes.API;
+using Parakeet.Core.Attachments.Tables;
 
-namespace Parakeet.Core.Attachments.Tables;
+namespace Parakeet.Core.Emojis.Tables;
 
-// Local registered users
-[Table("file_hashes")]
+public enum EmojiParentType : ushort {
+	Server,
+	Detached
+}
+
+public class EmojiParent {
+	[JsonPropertyName("parent_type")]
+	public EmojiParentType Type { get; set; }
+
+	[JsonPropertyName("id")]
+	public string? ID { get; set; }
+}
+
+// UNFINISHED
+[Table("emojis")]
 [Index(nameof(ID), IsUnique = true)]
-public class Hashes {
+public class Emoji {
 	[Column("id")]
+	[Required]
 	public Guid ID { get; set; }
 
-	/**
-	<summary>
-	A SHA512 hash, as a string
-	</summary>
-	*/
-	[Column("processed_hash")]
-	public required string ProcessedHash { get; set; }
+	[Column("parent", TypeName = "jsonb")]
+	public required EmojiParent Parent { get; set; }
 
-	[Column("created_at")]
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public DateTime UploadedAt { get; set; }
+	[Column("creator_id")]
+	public Guid CreatorID { get; set; }
 
-	[Column("bucket_id")]
-	public required string BucketID { get; set; }
+	[Column("name")]
+	public required string Name { get; set; }
 
-	[Column("path")]
-	public required string Path { get; set; }
+	[Column("animated")]
+	public bool IsAnimated { get; set; }
 
-	[Column("iv")]
-	public required string IV { get; set; }
-
-	[Column("metadata", TypeName = "jsonb")]
-	public required FileMetadata Metadata { get; set; }
-
-	[Column("content_type")]
-	public required string ContentType { get; set; }
-
-	[Column("size")]
-	public ulong Size { get; set; }
-}
+	[Column("nsfw")]
+	public bool IsNSFW { get; set; }
+};

@@ -97,8 +97,8 @@ public struct UserProfile {
 	[JsonPropertyName("content")]
 	public string? Content { get; set; }
 	/// Background visible on user's profile
-	[JsonPropertyName("background")]
-	public Attachment Background { get; set; }
+	[JsonPropertyName("background_id")]
+	public Guid? BackgroundID { get; set; }
 }
 
 public class BotInformation {
@@ -129,8 +129,8 @@ public class User {
 	[Column("pronouns")]
 	public List<String>? Pronouns { get; set; }
 
-	[Column("avatar", TypeName = "jsonb")]
-	public FileData? Avatar { get; set; }
+	[Column("avatar_id")]
+	public Guid? AvatarID { get; set; }
 
 	[Column("relations", TypeName = "jsonb")]
 	public List<Relationship>? Relationships { get; set; }

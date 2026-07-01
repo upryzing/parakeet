@@ -18,6 +18,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 </copyright>
 */
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using EntityFrameworkCore.Projectables;
@@ -41,12 +42,15 @@ public class Account {
 	public Guid ID { get; set; }
 
 	[Column("email")]
-	public string Email { get; set; }
+	[Required]
+	public required string Email { get; set; }
 
 	[Column("password")]
 	[StringLength(105)]
-	public string Password { get; set; }
+	[Required]
+	public required string Password { get; set; }
 
 	[Column("deletion")]
+	[DefaultValue(true)]
 	public bool Deletion { get; set; }
 };

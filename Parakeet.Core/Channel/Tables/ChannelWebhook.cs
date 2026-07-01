@@ -29,28 +29,33 @@ using EntityFrameworkCore.Projectables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Parakeet.Shared.Classes.API;
+
 using Parakeet.Core.Attachments.Tables;
 
 namespace Parakeet.Core.Channel.Tables;
 
-public class ChannelCompositeKey {
-	[JsonPropertyName("channel")]
-	public Guid Channel;
-
-	[JsonPropertyName("user")]
-	public Guid User;
-}
-
 // UNFINISHED
-[Table("channel_unreads")]
+[Table("channel_webhooks")]
 [Index(nameof(ID), IsUnique = true)]
-public class ChannelUnread {
-	[Column("id", TypeName = "jsonb")]
-	public ChannelCompositeKey ID { get; set; }
+public class ChannelWebhook {
+	[Column("id")]
+	public Guid ID { get; set; }
 
-	[Column("last_id")]
-	public Guid? LastID { get; set; }
+	[Column("name")]
+	public required string Name { get; set; }
 
-	[Column("mentions")]
-	public List<Guid>? Mentions { get; set; }
+	[Column("avatar_id")]
+	public Guid? AvatarID { get; set; }
+
+	[Column("creator_id")]
+	public Guid CreatorID { get; set; }
+
+	[Column("channel_id")]
+	public Guid ChannelID { get; set; }
+
+	[Column("permissions")]
+	public UInt64 Permissions { get; set; }
+
+	[Column("token")]
+	public string? Token { get; set; }
 };
